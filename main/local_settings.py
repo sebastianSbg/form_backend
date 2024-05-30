@@ -48,6 +48,16 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Define which origins are allowed to make cross-site HTTP requests
+CORS_ALLOWED_ORIGINS = [
+    "https://railwaytest-production.up.railway.app",
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+]
+
 ROOT_URLCONF = "main.urls"
 
 TEMPLATES = [
