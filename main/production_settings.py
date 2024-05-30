@@ -29,6 +29,10 @@ CSRF_TRUSTED_ORIGINS = [
     # NOTE: Place your custom url here if any
 ]
 
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+]
 
 # Application definition
 
