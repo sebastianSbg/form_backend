@@ -25,8 +25,9 @@ def product_list(request):
 @api_view()
 def productDetail(request, id):
     try:
-        product = Product.objects.get(pk=id)
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)
+        # product = Product.objects.get(pk=id)
+        # serializer = ProductSerializer(product)
+        # return Response(serializer.data)
+        return Response('ID CAN"T BE PROVIDED')
     except Product.DoesNotExist:
         return Response(status=404)
