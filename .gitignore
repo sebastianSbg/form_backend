@@ -148,6 +148,9 @@ myvenv/
 # Rope project settings
 .ropeproject
 
+# private settings
+*private_settings.py
+
 # mkdocs documentation
 /site
 

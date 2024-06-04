@@ -5,6 +5,7 @@ when you are in your local environment.
 
 import os
 from pathlib import Path
+from .private_settings import *  # delete if no private_settings file exists
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,3 +133,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Email Server setup
+# settings.py
+
