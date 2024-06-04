@@ -8,6 +8,9 @@ from .serializers import ProductSerializer
 
 from django.core.mail import send_mail
 from django.conf import settings
+from django.core.mail import EmailMessage
+from django.conf import settings
+from pathlib import Path
 
 
 def send_form_submitted_email():
@@ -17,6 +20,25 @@ def send_form_submitted_email():
     recipient_list = ['sebastian.bommer.sbg@gmail.com']
 
     send_mail(subject, message, email_from, recipient_list)
+
+
+def send_email_with_attachment():
+    subject = 'Email Subject'
+    message = 'Email message body'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = ['recipient@example.com', ]
+
+    # Create an EmailMessage object
+    email = EmailMessage(subject, message, email_from, recipient_list)
+
+    # Attach a file
+    file_path = 'savetodb/static/dog.jpg'  # Update with your file path
+    print(f"File exists: {Path(file_path).exists()}")
+    with open(file_path, 'rb') as f:
+        email.attach('Form.jpg', f.read())
+
+    # Send the email
+    email.send()
 
 
 @api_view(['GET', 'POST'])
@@ -29,7 +51,8 @@ def product_list(request):
         print(serializer.validated_data)  # returns a dictionary of the data
         Product(**serializer.validated_data).save()
         try:
-            send_form_submitted_email()
+            # send_form_submitted_email()
+            send_email_with_attachment()
         except:
             pass
         return Response('submitted')
