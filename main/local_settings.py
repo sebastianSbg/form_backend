@@ -5,7 +5,9 @@ when you are in your local environment.
 
 import os
 from pathlib import Path
-from .private_settings import *  # delete if no private_settings file exists
+
+# if Path('private_settings.py').exists():
+from .private_settings import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

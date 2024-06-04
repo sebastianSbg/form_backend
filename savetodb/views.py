@@ -32,10 +32,10 @@ def send_email_with_attachment():
     email = EmailMessage(subject, message, email_from, recipient_list)
 
     # Attach a file
-    file_path = 'savetodb/static/dog.jpg'  # Update with your file path
+    file_path = 'savetodb/static/form_template.pdf'  # Update with your file path
     print(f"File exists: {Path(file_path).exists()}")
     with open(file_path, 'rb') as f:
-        email.attach('Form.jpg', f.read())
+        email.attach('Form.pdf', f.read())
 
     # Send the email
     email.send()
