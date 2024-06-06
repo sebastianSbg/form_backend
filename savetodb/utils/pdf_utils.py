@@ -304,8 +304,11 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
         for key, value in data_transformed.items():
             data_transformed[key] = format_date_to_string(value)
+            data_transformed[key] = str(value)
 
-        print(data_transformed)
+        print("Gesamtanzahl")
+        print(data_transformed['Gesamtanzahl'])
+        print(data_transformed['stay_num_of_guests'])
         write_fillable_pdf(str(path_form_template), str(out_path), data_transformed)
         flatten_form_fields(str(out_path), str(out_path))
 
