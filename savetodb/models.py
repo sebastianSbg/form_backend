@@ -6,6 +6,7 @@ class Product(models.Model):
     stay_valid = models.BooleanField(default=False)
     stay_arrival_date = models.DateTimeField(null=True, blank=True)
     stay_departure_date = models.DateTimeField(null=True, blank=True)
+    stay_num_guests = models.IntegerField(null=True, blank=True)
 
     # Assuming a max of 5 persons based on provided JSON structure
     person_first_name_0 = models.CharField(max_length=255, blank=True)
@@ -51,3 +52,7 @@ class Product(models.Model):
     id_country = models.CharField(max_length=255, blank=True)
 
     signature = models.TextField(blank=True)
+    signature_date = models.DateTimeField(null=True, blank=True)
+
+    abnb_id = models.CharField(max_length=255, blank=True)
+    abnb_name = models.CharField(max_length=255, blank=True)
