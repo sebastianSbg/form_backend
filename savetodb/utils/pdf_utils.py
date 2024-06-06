@@ -304,7 +304,8 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
         for key, value in data_transformed.items():
             data_transformed[key] = format_date_to_string(value)
-            data_transformed[key] = str(value)
+
+        data_transformed['Gesamtanzahl'] = str(data_transformed['Gesamtanzahl'])
 
         print("Gesamtanzahl")
         print(data_transformed['Gesamtanzahl'])
