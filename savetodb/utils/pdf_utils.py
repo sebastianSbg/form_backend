@@ -276,7 +276,7 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
     """ABNB INFO"""
 
-    data_transformed['LfdNr'] = str(lfdnr + 1)
+    data_transformed['LfdNr'] = str(lfdnr)
 
     try:
 
