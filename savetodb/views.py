@@ -14,6 +14,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from pathlib import Path
 from .utils.pdf_utils import fill_guest_registration_pdf, dict_map
+from django.shortcuts import get_object_or_404
 
 
 def send_form_failed_email():
@@ -41,6 +42,27 @@ def send_email_with_attachment(path_pdf: Path):
 
     # Send the email
     email.send()
+
+
+@api_view(['POST'])
+def send_form_email(request, id):
+
+    product = get_object_or_404(Product, id=id)
+    serializer = ProductSerializer(product)
+    product_data = serializer.data
+
+    """Sending EMAIL"""
+    try:
+        form_template = Path('savetodb/static/form_template.pdf')
+        pdf_out = fill_guest_registration_pdf(product_data, form_template, dict_map)
+        send_email_with_attachment(pdf_out)
+        os.remove(pdf_out)
+    except Exception as e:
+        send_form_failed_email()
+        print("Couldn't send email.")
+        print(e)
+
+    return Response('submitted')
 
 
 @api_view(['GET', 'POST'])
