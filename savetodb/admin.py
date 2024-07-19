@@ -10,7 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
         'addr_street', 'addr_city', 'addr_zip', 'addr_country',
         'id_number', 'id_issue_date', 'id_institution', 'id_country', 'signature_date',
     )
-    list_filter = ('stay_num_of_guests')
+    list_filter = ('stay_num_of_guests',)
     search_fields = ('stay_num_of_guests', 'stay_arrival_date', 'stay_departure_date', 'person_last_name_0', 'person_first_name_0')
 
 # You can customize more as per your requirements.
