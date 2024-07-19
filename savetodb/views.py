@@ -44,7 +44,7 @@ def send_email_with_attachment(path_pdf: Path):
     email.send()
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def send_form_email(request, id):
 
     product = get_object_or_404(Product, id=id)
