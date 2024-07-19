@@ -320,7 +320,8 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
     try:
         path_img_pdf = str(out_path.parent.resolve() / 'img.pdf')
-        render_svg_to_pdf(data_transformed['signature'], path_img_pdf, 645, 80, 135, 30, orientation='landscape')
+        # render_svg_to_pdf(data_transformed['signature'], path_img_pdf, 625, 80, 75, 30, orientation='landscape')
+        render_svg_to_pdf(data_transformed['signature'], path_img_pdf, 625, 95, 75, 30, orientation='landscape')
         overlay_pdfs(str(out_path.resolve()), path_img_pdf, str(out_path.resolve()), rotation=270)
         # os.remove(path_img_pdf)
     except Exception as e:
