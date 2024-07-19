@@ -15,7 +15,7 @@ from django.conf import settings
 from pathlib import Path
 from .utils.pdf_utils import fill_guest_registration_pdf, dict_map
 from django.shortcuts import get_object_or_404
-
+from datetime import datetime
 
 def send_form_failed_email():
     subject = 'Form FAILED'
@@ -44,12 +44,24 @@ def send_email_with_attachment(path_pdf: Path):
     email.send()
 
 
+def format_date_fields(data):
+    for key, value in data.items():
+        if isinstance(value, str):
+            try:
+                value = datetime.fromisoformat(value)
+            except ValueError:
+                continue
+        if isinstance(value, datetime):
+            data[key] = value.strftime("%d-%m-%Y")
+    return data
+
 @api_view(['GET'])
 def send_form_email(request, id):
 
     product = get_object_or_404(Product, id=id)
     serializer = ProductSerializer(product)
     product_data = serializer.data
+    product_data = format_date_fields(product_data)
 
     """Sending EMAIL"""
     try:
