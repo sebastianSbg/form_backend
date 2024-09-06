@@ -87,7 +87,13 @@ def send_form_email(request, id_start, id_end):
         shutil.make_archive(zip_filename, 'zip', form_folder)  # Creates forms.zip
         print('stop 3')
         # Send the zip file as an email attachment
-        send_email_with_attachment(f"{zip_filename}.zip")
+        # Verify that the zip file exists before sending
+        zip_path = f"{zip_filename}.zip"
+        if not Path(zip_path).exists():
+            raise FileNotFoundError(f"Zip file not found: {zip_path}")
+
+        # Send the zip file as an email attachment
+        send_email_with_attachment(Path(zip_path))
         print('stop 4')
         # Remove the forms folder after zipping
         shutil.rmtree(form_folder)
