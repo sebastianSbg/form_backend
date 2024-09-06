@@ -66,6 +66,7 @@ def send_form_email(request, id_start, id_end):
     form_folder.mkdir(parents=True, exist_ok=True)  # Create forms folder if it doesn't exist
 
     # Generate PDFs for each product ID in the specified range
+    counter = 1
     for idx in range(id_start, id_end + 1):
         try:
             product = get_object_or_404(Product, id=idx)
@@ -74,9 +75,10 @@ def send_form_email(request, id_start, id_end):
             product_data = format_date_fields(product_data)
 
             # Generate the PDF and save it in the forms folder
-            pdf_out = form_folder / f'form_{idx}.pdf'
+            pdf_out = form_folder / f'form_{counter}.pdf'
             fill_guest_registration_pdf(product_data, form_template, dict_map, file_out=pdf_out)
             print(f'Successfully saved: {pdf_out}')
+            counter += 1
         except Exception as e:
             print(f"Error processing product ID {idx}: {e}")
             continue
