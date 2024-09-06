@@ -73,6 +73,7 @@ def send_form_email(request, id_start, id_end):
             # Generate the PDF and save it in the forms folder
             pdf_out = form_folder / f'form_{idx}.pdf'
             fill_guest_registration_pdf(product_data, form_template, dict_map, file_out=pdf_out)
+            print(f'saved: {pdf_out}')
         except Exception as e:
             print(f"Error processing product ID {idx}: {e}")
             continue
@@ -80,12 +81,14 @@ def send_form_email(request, id_start, id_end):
     """Zipping the forms folder and sending the email"""
     try:
         # Create a zip archive of the forms folder
+        print('stop 1')
         zip_filename = form_folder.parent / 'forms'  # Specify the path without .zip extension
+        print('stop 2')
         shutil.make_archive(zip_filename, 'zip', form_folder)  # Creates forms.zip
-
+        print('stop 3')
         # Send the zip file as an email attachment
         send_email_with_attachment(f"{zip_filename}.zip")
-
+        print('stop 4')
         # Remove the forms folder after zipping
         shutil.rmtree(form_folder)
 
