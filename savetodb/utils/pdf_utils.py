@@ -276,15 +276,11 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
     data_transformed = map_dict(mapping_data, data, delete_original=False) if dict_map else data
 
     """ABNB INFO"""
-
     data_transformed['LfdNr'] = str(lfdnr)
 
     try:
-
         """SEX"""
-
-        mapSex = {'Male': 'SexM', 'Female': 'SexW', 'divers': 'SexD', 'inter': 'SexI',
-                  'keine Angabe': 'SexK', 'Other': 'SexO'}
+        mapSex = {'Male': 'SexM', 'Female': 'SexW', 'divers': 'SexD', 'inter': 'SexI', 'keine Angabe': 'SexK', 'Other': 'SexO'}
         data_transformed[mapSex[data_transformed['person_sex_0']]] = 'Yes'
 
         data_transformed['Nachname.2'] = "Bomml"
@@ -308,25 +304,26 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
         data_transformed['Gesamtanzahl'] = str(data_transformed['Gesamtanzahl'])
 
-        print("Gesamtanzahl")
-        print(data_transformed['Gesamtanzahl'])
-        print(data_transformed['stay_num_of_guests'])
         write_fillable_pdf(str(path_form_template), str(out_path), data_transformed)
         flatten_form_fields(str(out_path), str(out_path))
 
     except Exception as e:
+        print(f"Error during PDF fill: {e}")
         pass
 
     """Insert signature"""
-
     try:
         path_img_pdf = str(out_path.parent.resolve() / 'img.pdf')
-        # render_svg_to_pdf(data_transformed['signature'], path_img_pdf, 625, 80, 75, 30, orientation='landscape')
         render_svg_to_pdf(data_transformed['signature'], path_img_pdf, 615, 95, 50, 20, orientation='landscape')
         overlay_pdfs(str(out_path.resolve()), path_img_pdf, str(out_path.resolve()), rotation=270)
-        # os.remove(path_img_pdf)
+
+        # Clean up the temporary image PDF after use
+        if os.path.exists(path_img_pdf):
+            os.remove(path_img_pdf)
+            print(f"Temporary image file removed: {path_img_pdf}")
+
     except Exception as e:
-        print("Couldn't perform signature")
+        print("Couldn't perform signature overlay")
         print(e)
 
     return out_path
