@@ -15,6 +15,7 @@ from svglib.svglib import svg2rlg
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.graphics import renderPDF, renderPM
+from pathlib import Path
 
 
 def render_svg_to_pdf(svg_string, pdf_file, x, y, width, height, orientation='portrait'):
@@ -270,8 +271,8 @@ def format_date_to_string(data):
 
 
 def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_data: dict = None,
-                                file_out: str = "temp.pdf", lfdnr: int = 0) -> Path:
-    out_path = (path_form_template.parent / file_out).resolve()
+                                file_out: Path = "temp.pdf", lfdnr: int = 0) -> Path:
+    out_path = file_out.resolve()
     data_transformed = map_dict(mapping_data, data, delete_original=False) if dict_map else data
 
     """ABNB INFO"""

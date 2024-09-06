@@ -5,6 +5,6 @@ from . import views
 urlpatterns = [
     path('products/', views.product_list),
     path('products/<int:id>', views.productDetail),
-    path('mail/<int:id>/', views.send_form_email, name='send_form_email'),
+    path('mail/<int:id>/<int:id>/', views.send_form_email, name='send_form_email'),
 
 ]

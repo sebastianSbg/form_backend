@@ -16,6 +16,7 @@ from pathlib import Path
 from .utils.pdf_utils import fill_guest_registration_pdf, dict_map
 from django.shortcuts import get_object_or_404
 from datetime import datetime
+import shutil
 
 def send_form_failed_email():
     subject = 'Form FAILED'
@@ -56,19 +57,38 @@ def format_date_fields(data):
     return data
 
 @api_view(['GET'])
-def send_form_email(request, id):
+def send_form_email(request, id_start, id_end):
+    form_template = Path('savetodb/static/form_template.pdf')
+    form_folder = Path('savetodb/static/forms')
+    form_folder.mkdir(parents=True, exist_ok=True)  # Create forms folder if it doesn't exist
 
-    product = get_object_or_404(Product, id=id)
-    serializer = ProductSerializer(product)
-    product_data = serializer.data
-    product_data = format_date_fields(product_data)
+    # Generate PDFs for each product ID in the specified range
+    for idx in range(id_start, id_end + 1):
+        try:
+            product = get_object_or_404(Product, id=idx)
+            serializer = ProductSerializer(product)
+            product_data = serializer.data
+            product_data = format_date_fields(product_data)
 
-    """Sending EMAIL"""
+            # Generate the PDF and save it in the forms folder
+            pdf_out = form_folder / f'form_{idx}.pdf'
+            fill_guest_registration_pdf(product_data, form_template, dict_map, file_out=pdf_out)
+        except Exception as e:
+            print(f"Error processing product ID {idx}: {e}")
+            continue
+
+    """Zipping the forms folder and sending the email"""
     try:
-        form_template = Path('savetodb/static/form_template.pdf')
-        pdf_out = fill_guest_registration_pdf(product_data, form_template, dict_map)
-        send_email_with_attachment(pdf_out)
-        os.remove(pdf_out)
+        # Create a zip archive of the forms folder
+        zip_filename = form_folder.parent / 'forms'  # Specify the path without .zip extension
+        shutil.make_archive(zip_filename, 'zip', form_folder)  # Creates forms.zip
+
+        # Send the zip file as an email attachment
+        send_email_with_attachment(f"{zip_filename}.zip")
+
+        # Remove the forms folder after zipping
+        shutil.rmtree(form_folder)
+
     except Exception as e:
         send_form_failed_email()
         print("Couldn't send email.")
