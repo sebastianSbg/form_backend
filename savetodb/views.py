@@ -25,6 +25,10 @@ def send_email_with_attachment(path_pdf: Path):
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [settings.EMAIL_HOST_USER]
 
+    # Ensure that path_pdf is a Path object
+    if isinstance(path_pdf, str):
+        path_pdf = Path(path_pdf)
+
     # Check if the file exists before sending
     if not path_pdf.exists():
         print(f"Error: File does not exist: {path_pdf}")
@@ -126,7 +130,7 @@ def product_list(request):
         try:
             form_template = Path('savetodb/static/form_template.pdf')
             pdf_out = fill_guest_registration_pdf(serializer_data, form_template, dict_map)
-            send_email_with_attachment(Path(pdf_out))
+            send_email_with_attachment(pdf_out)
             os.remove(pdf_out)
         except Exception as e:
             send_form_failed_email()

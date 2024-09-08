@@ -272,7 +272,11 @@ def format_date_to_string(data):
 
 def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_data: dict = None,
                                 file_out: Path = "temp.pdf", lfdnr: int = 0) -> Path:
-    out_path = file_out.resolve()
+
+    try:
+        out_path = file_out.resolve()
+    except:
+        print("Couldn't resolve out path")
     data_transformed = map_dict(mapping_data, data, delete_original=False) if dict_map else data
 
     """ABNB INFO"""
