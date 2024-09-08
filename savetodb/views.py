@@ -79,7 +79,7 @@ def send_form_email(request, id_start, id_end):
             product_data = format_date_fields(product_data)
 
             # Generate the PDF and save it in the forms folder
-            pdf_out = form_folder / f'form_{counter}.pdf:02'
+            pdf_out = form_folder / f'form_{counter:02}.pdf'
             fill_guest_registration_pdf(product_data, form_template, dict_map, file_out=pdf_out)
             print(f'Successfully saved: {pdf_out}')
             counter += 1
