@@ -56,3 +56,6 @@ class Product(models.Model):
 
     abnb_id = models.CharField(max_length=255, blank=True)
     abnb_name = models.CharField(max_length=255, blank=True)
+
+    # New field lfdnr that must be zero or greater
+    lfdnr = models.IntegerField(default=0, blank=True, null=True)

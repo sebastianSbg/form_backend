@@ -10,6 +10,7 @@ from .serializers import ProductSerializer
 from .utils.pdf_utils import fill_guest_registration_pdf, dict_map
 from datetime import datetime
 import shutil
+from django.db.models import Max
 
 def send_form_failed_email():
     subject = 'Form FAILED'
@@ -124,6 +125,15 @@ def product_list(request):
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer_data = serializer.validated_data  # returns a dictionary of the data
+
+        # Get the current maximum lfdnr value from the Product model and increment it by one
+        max_lfdnr = Product.objects.aggregate(Max('lfdnr'))['lfdnr__max'] or 0
+        new_lfdnr = max_lfdnr + 1
+
+        # Add the new lfdnr value to the validated data
+        serializer.validated_data['lfdnr'] = new_lfdnr
+
+        # Save the new product entry with the updated lfdnr value
         Product(**serializer.validated_data).save()
 
         """Sending EMAIL"""
