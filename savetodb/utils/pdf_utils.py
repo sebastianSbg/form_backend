@@ -260,8 +260,7 @@ dict_map = {
     'Gesamtanzahl': 'stay_num_of_guests',
     'Signature Datum': 'signature_date',
     'UnterkunftName': 'abnb_name',
-    'Kennzahl': 'abnb_id',
-    'LfdNr': 'lfdnr',
+    'Kennzahl': 'abnb_id'
 }
 
 
@@ -280,7 +279,7 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
     # """ABNB INFO"""
     try:
-        data_transformed['LfdNr'] = str(data_transformed['LfdNr'])
+        data_transformed['LfdNr'] = str(data['lfdnr'])
     except:
         pass
 
