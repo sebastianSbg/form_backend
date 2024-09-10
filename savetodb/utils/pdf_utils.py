@@ -400,7 +400,7 @@ if __name__ == "__main__":
             """ID"""
             guest_info['Kennzahl'] = '50305-000003-2023'
             guest_info['UnterkunftName'] = 'Airbnb Bommer'
-            guest_info['LfdNr'] = str(i + 1)
+            guest_info['LfdNr'] = column_mapping['lfdnr']
 
             """Datum"""
             guest_info['Signature Datum'] = str(guest[column_mapping['Timestamp_x']].split(' ')[0])  # TODO: check index
