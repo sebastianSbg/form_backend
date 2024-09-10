@@ -79,6 +79,8 @@ def send_form_email(request, id_start, id_end):
             product_data = serializer.data
             product_data = format_date_fields(product_data)
 
+            print(product_data)
+
             # Generate the PDF and save it in the forms folder
             pdf_out = form_folder / f'form_{counter:02}.pdf'
             print('Filling the form!')

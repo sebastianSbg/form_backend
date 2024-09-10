@@ -280,8 +280,9 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
     # """ABNB INFO"""
     try:
         data_transformed['LfdNr'] = str(data['lfdnr'])
-    except:
-        pass
+    except KeyError as e:
+        print(f"Error: Missing lfdnr key - {e}")
+        data_transformed['LfdNr'] = '0'
 
     try:
         """SEX"""
