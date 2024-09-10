@@ -261,6 +261,7 @@ dict_map = {
     'Signature Datum': 'signature_date',
     'UnterkunftName': 'abnb_name',
     'Kennzahl': 'abnb_id',
+    'LfdNr': 'lfdnr',
 }
 
 
@@ -277,8 +278,8 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
     data_transformed = map_dict(mapping_data, data, delete_original=False) if dict_map else data
 
-    """ABNB INFO"""
-    data_transformed['LfdNr'] = str(lfdnr)
+    # """ABNB INFO"""
+    # data_transformed['LfdNr'] = str(lfdnr)
 
     try:
         """SEX"""
@@ -401,6 +402,8 @@ if __name__ == "__main__":
             guest_info['Kennzahl'] = '50305-000003-2023'
             guest_info['UnterkunftName'] = 'Airbnb Bommer'
             guest_info['LfdNr'] = column_mapping['lfdnr']
+
+            print(column_mapping['lfdnr'])
 
             """Datum"""
             guest_info['Signature Datum'] = str(guest[column_mapping['Timestamp_x']].split(' ')[0])  # TODO: check index
