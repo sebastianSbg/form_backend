@@ -260,7 +260,8 @@ dict_map = {
     'Gesamtanzahl': 'stay_num_of_guests',
     'Signature Datum': 'signature_date',
     'UnterkunftName': 'abnb_name',
-    'Kennzahl': 'abnb_id'
+    'Kennzahl': 'abnb_id',
+    'LfdNr': 'lfdnr',
 }
 
 
@@ -279,7 +280,7 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
 
     # """ABNB INFO"""
     try:
-        data_transformed['LfdNr'] = str(data['lfdnr'])
+        data_transformed['LfdNr'] = str(data_transformed['LfdNr'])
     except KeyError as e:
         print(f"Error: Missing lfdnr key - {e}")
         data_transformed['LfdNr'] = '0'

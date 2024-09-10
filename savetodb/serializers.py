@@ -4,7 +4,7 @@ from .models import Product
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['stay_valid', 'stay_arrival_date', 'stay_departure_date', 'stay_num_of_guests',
+        fields = ['stay_valid', 'lfdnr', 'stay_arrival_date', 'stay_departure_date', 'stay_num_of_guests',
             'person_first_name_0', 'person_last_name_0', 'person_country_0', 'person_sex_0', 'person_birth_date_0',
             'person_first_name_1', 'person_last_name_1', 'person_country_1', 'person_sex_1', 'person_birth_date_1',
             'person_first_name_2', 'person_last_name_2', 'person_country_2', 'person_sex_2', 'person_birth_date_2',
