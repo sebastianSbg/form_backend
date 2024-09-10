@@ -279,9 +279,10 @@ def fill_guest_registration_pdf(data: dict, path_form_template: Path, mapping_da
     data_transformed = map_dict(mapping_data, data, delete_original=False) if dict_map else data
 
     # """ABNB INFO"""
-    data_transformed['LfdNr'] = str(data_transformed['LfdNr'])
-
-    print(f'data_transformed: {data_transformed}')
+    try:
+        data_transformed['LfdNr'] = str(data_transformed['LfdNr'])
+    except:
+        pass
 
     try:
         """SEX"""

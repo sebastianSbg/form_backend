@@ -81,6 +81,7 @@ def send_form_email(request, id_start, id_end):
 
             # Generate the PDF and save it in the forms folder
             pdf_out = form_folder / f'form_{counter:02}.pdf'
+            print('Filling the form!')
             fill_guest_registration_pdf(product_data, form_template, dict_map, file_out=pdf_out)
             print(f'Successfully saved: {pdf_out}')
             counter += 1
