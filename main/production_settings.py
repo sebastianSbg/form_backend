@@ -37,6 +37,8 @@ CORS_ALLOW_METHODS = [
 # Define which origins are allowed to make cross-site HTTP requests
 CORS_ALLOWED_ORIGINS = [
     "https://railwaytest-production.up.railway.app",
+    "https://railwaytest-production-1d1f.up.railway.app",
+    "https://railwaytest-production-*.up.railway.app",
 ]
 
 # Application definition
