@@ -143,7 +143,7 @@ def product_list(request):
         try:
             form_template = Path('savetodb/static/form_template.pdf')
             pdf_out = fill_guest_registration_pdf(serializer_data, form_template, dict_map)
-            send_email_with_attachment(pdf_out) #THIS MIGHT FAIL AT TIMES
+            # send_email_with_attachment(pdf_out) #THIS MIGHT FAIL AT TIMES
             os.remove(pdf_out)
         except Exception as e:
             # send_form_failed_email() #THIS MIGHT FAIL AT TIMES
