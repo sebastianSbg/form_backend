@@ -146,7 +146,7 @@ def product_list(request):
             send_email_with_attachment(pdf_out)
             os.remove(pdf_out)
         except Exception as e:
-            send_form_failed_email()
+            # send_form_failed_email()
             print("Couldn't send email.")
             print(e)
 
