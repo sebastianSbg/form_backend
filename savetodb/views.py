@@ -21,35 +21,35 @@ def send_form_failed_email():
 
 
 def send_email_with_attachment(path_pdf: Path):
-    subject = 'Form submitted'
-    message = 'Successfully submitted form.'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [settings.EMAIL_HOST_USER]
-
-    # Ensure that path_pdf is a Path object
-    if isinstance(path_pdf, str):
-        path_pdf = Path(path_pdf)
-
-    # Check if the file exists before sending
-    if not path_pdf.exists():
-        print(f"Error: File does not exist: {path_pdf}")
-        return
-
-    try:
-        # Create an EmailMessage object
-        email = EmailMessage(subject, message, email_from, recipient_list)
-
-        # Attach the file with a proper filename and content type
-        with open(path_pdf, 'rb') as f:
-            email.attach(path_pdf.name, f.read(), 'application/zip')  # Corrected to ensure proper attachment as zip
-
-        # Send the email
-        email.send()
-        print(f"Email sent successfully with attachment: {path_pdf}")
-
-    except Exception as e:
-        print(f"Error sending email: {e}")
-        send_form_failed_email()
+    # subject = 'Form submitted'
+    # message = 'Successfully submitted form.'
+    # email_from = settings.EMAIL_HOST_USER
+    # recipient_list = [settings.EMAIL_HOST_USER]
+    #
+    # # Ensure that path_pdf is a Path object
+    # if isinstance(path_pdf, str):
+    #     path_pdf = Path(path_pdf)
+    #
+    # # Check if the file exists before sending
+    # if not path_pdf.exists():
+    #     print(f"Error: File does not exist: {path_pdf}")
+    #     return
+    #
+    # try:
+    #     # Create an EmailMessage object
+    #     email = EmailMessage(subject, message, email_from, recipient_list)
+    #
+    #     # Attach the file with a proper filename and content type
+    #     with open(path_pdf, 'rb') as f:
+    #         email.attach(path_pdf.name, f.read(), 'application/zip')  # Corrected to ensure proper attachment as zip
+    #
+    #     # Send the email
+    #     email.send()
+    #     print(f"Email sent successfully with attachment: {path_pdf}")
+    #
+    # except Exception as e:
+    #     print(f"Error sending email: {e}")
+    #     send_form_failed_email()
 
 
 def format_date_fields(data):
@@ -66,30 +66,30 @@ def format_date_fields(data):
 
 @api_view(['GET'])
 def send_form_email(request, id_start, id_end):
-    form_template = Path('savetodb/static/form_template.pdf')
-    form_folder = Path('savetodb/static/forms')
-    form_folder.mkdir(parents=True, exist_ok=True)  # Create forms folder if it doesn't exist
-
-    # Generate PDFs for each product ID in the specified range
-    counter = 1
-    for idx in range(id_start, id_end + 1):
-        try:
-            product = get_object_or_404(Product, id=idx)
-            serializer = ProductSerializer(product)
-            product_data = serializer.data
-            product_data = format_date_fields(product_data)
-
-            print(product_data)
-
-            # Generate the PDF and save it in the forms folder
-            pdf_out = form_folder / f'form_{counter:02}.pdf'
-            print('Filling the form!')
-            pdf_out = fill_guest_registration_pdf(product_data, form_template, dict_map, file_out=pdf_out)
-            print(f'Successfully saved: {pdf_out}')
-            counter += 1
-        except Exception as e:
-            print(f"Error processing product ID {idx}: {e}")
-            continue
+    # form_template = Path('savetodb/static/form_template.pdf')
+    # form_folder = Path('savetodb/static/forms')
+    # form_folder.mkdir(parents=True, exist_ok=True)  # Create forms folder if it doesn't exist
+    #
+    # # Generate PDFs for each product ID in the specified range
+    # counter = 1
+    # for idx in range(id_start, id_end + 1):
+    #     try:
+    #         product = get_object_or_404(Product, id=idx)
+    #         serializer = ProductSerializer(product)
+    #         product_data = serializer.data
+    #         product_data = format_date_fields(product_data)
+    #
+    #         print(product_data)
+    #
+    #         # Generate the PDF and save it in the forms folder
+    #         pdf_out = form_folder / f'form_{counter:02}.pdf'
+    #         print('Filling the form!')
+    #         pdf_out = fill_guest_registration_pdf(product_data, form_template, dict_map, file_out=pdf_out)
+    #         print(f'Successfully saved: {pdf_out}')
+    #         counter += 1
+    #     except Exception as e:
+    #         print(f"Error processing product ID {idx}: {e}")
+    #         continue
 
     """Zipping the forms folder and sending the email"""
     try:
