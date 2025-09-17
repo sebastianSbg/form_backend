@@ -1,6 +1,20 @@
 # Django REST Starter
 
-Welcome to Django REST Starter! This repository provides a starting point for building RESTful APIs using the Django REST framework
+## TODO
+
+- [ ] ZIP Needs to allow letters and numbers
+- [ ] Add email
+- [ ] Checkin and checkout can't be on the same date
+- [ ] One form with Airbnb ID being input
+- [ ] Ask if they want bicycle rental or others
+- [ ] Automatic sending of email summaries
+- [ ] Create a default version with version history
+- [ ] Datum eingabe sollte string sein und nicht flexibles datum (Only make them add people over tha age of 14)
+- [ ] Don't allow multiple submissions
+- [ ] Only allow birthdays after 14 years of age
+- [ ] Stier 4 not tied to Forms
+- [ ] Be able to export data for analysis
+- [ ] Address validate to not be Airbnb address
 
 ## File Structure
 ```
