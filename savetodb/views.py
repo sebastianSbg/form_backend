@@ -13,11 +13,12 @@ import shutil
 from django.db.models import Max
 
 def send_form_failed_email():
-    subject = 'Form FAILED'
-    message = 'A new form failed to be submitted.'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [settings.EMAIL_HOST_USER]
-    send_mail(subject, message, email_from, recipient_list)
+    print("Sending form failed")
+    # subject = 'Form FAILED'
+    # message = 'A new form failed to be submitted.'
+    # email_from = settings.EMAIL_HOST_USER
+    # recipient_list = [settings.EMAIL_HOST_USER]
+    # send_mail(subject, message, email_from, recipient_list)
 
 
 def send_email_with_attachment(path_pdf: Path):
@@ -37,10 +38,12 @@ def send_email_with_attachment(path_pdf: Path):
 
     try:
         # Create an EmailMessage object
+        print("Generating email")
         email = EmailMessage(subject, message, email_from, recipient_list)
 
         # Attach the file with a proper filename and content type
         with open(path_pdf, 'rb') as f:
+            print("Attaching to email")
             email.attach(path_pdf.name, f.read(), 'application/zip')  # Corrected to ensure proper attachment as zip
 
         # Send the email
@@ -49,7 +52,7 @@ def send_email_with_attachment(path_pdf: Path):
 
     except Exception as e:
         print(f"Error sending email: {e}")
-        send_form_failed_email()
+        # send_form_failed_email()
 
 
 def format_date_fields(data):
@@ -102,6 +105,7 @@ def send_form_email(request, id_start, id_end):
 
         # Verify that the zip file exists before sending
         if not Path(zip_path).exists():
+            print("Zip file not found")
             raise FileNotFoundError(f"Zip file not found: {zip_path}")
 
         # Send the zip file as an email attachment
@@ -113,7 +117,7 @@ def send_form_email(request, id_start, id_end):
         print('Forms folder removed successfully.')
 
     except Exception as e:
-        send_form_failed_email()
+        # send_form_failed_email()  # There can be issues if too many emails are sent
         print("Couldn't send email.")
         print(f"Error details: {e}")
 
