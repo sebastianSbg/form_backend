@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage, get_connection
 from django.conf import settings
 from pathlib import Path
 from .models import Product
@@ -46,6 +46,8 @@ def send_email_with_attachment(path_pdf: Path):
             print("Attaching to email")
             email.attach(path_pdf.name, f.read(), 'application/zip')  # Corrected to ensure proper attachment as zip
 
+        connection = get_connection(timeout=10)
+        email.connection = connection
         # Send the email
         email.send()
         print(f"Email sent successfully with attachment: {path_pdf}")
