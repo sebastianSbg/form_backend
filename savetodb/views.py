@@ -1,6 +1,7 @@
 import os
+import base64
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -37,13 +38,13 @@ def send_email_with_attachment(path_pdf: Path):
 
     """Selecting SMTP or SendGrid API send"""
     subject = 'Meldezettel'
-    message = 'Im Anhang finden Sie die Meldezettel. \n MfG MSc. Sebastian Bommer'
+    message = 'Im Anhang finden Sie die Meldezettel.<br> MfG MSc. Sebastian Bommer'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [settings.EMAIL_HOST_RECIPIENT]
 
     """Send VIA SMTP"""
 
-    if settings.EMAIL_USE_API:
+    if not settings.EMAIL_USE_API:
         print("Sending via SMTP")
         try:
             # Create an EmailMessage object
@@ -64,11 +65,25 @@ def send_email_with_attachment(path_pdf: Path):
             # send_form_failed_email()
 
     else:
+        with open(path_pdf, 'rb') as f:
+            file_data = f.read()
+            encoded_file = base64.b64encode(file_data).decode()  # SendGrid needs base64 string
+
         message = Mail(
             from_email=settings.EMAIL_HOST_USER,
             to_emails=settings.EMAIL_HOST_RECIPIENT,
             subject=subject,
             html_content=message)
+
+        attached_file = Attachment(
+            FileContent(encoded_file),
+            FileName(path_pdf.name),
+            FileType('application/zip'),  # Adjust MIME type if needed
+            Disposition('attachment')
+        )
+
+        message.attachment = attached_file
+
         try:
             sg = SendGridAPIClient(settings.EMAIL_API_PASSWORD)
             # sg.set_sendgrid_data_residency("eu")
