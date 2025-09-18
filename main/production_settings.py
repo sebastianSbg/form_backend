@@ -148,9 +148,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # email server
 
+
+def str_to_bool(value):
+    return value.lower() in ('true', '1', 'yes')
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ["MAIL_HOST"]
-EMAIL_PORT = os.environ["MAIL_PORT"]
+
+EMAIL_HOST_USER = os.environ["MAIL_USER"]  # The sender
+EMAIL_HOST_RECIPIENT = os.environ["MAIL_RECIPIENT"]  # The sender
+
+EMAIL_USE_API = str_to_bool(os.environ.get("MAIL_USE_API", "False"))
+
+EMAIL_HOST = os.environ["MAIL_HOST"]  # This is the host server e.g. smtp.gmail.com
+EMAIL_PORT = os.environ["MAIL_PORT"]  # TLS port is 578
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ["MAIL_USER"]
 EMAIL_HOST_PASSWORD = os.environ["MAIL_PASSWORD"]  # or your App Password if using 2FA
+
+EMAIL_API_PASSWORD = os.environ.get("MAIL_API_PASSWORD")

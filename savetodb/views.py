@@ -1,4 +1,6 @@
 import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -9,6 +11,7 @@ from .models import Product
 from .serializers import ProductSerializer
 from .utils.pdf_utils import fill_guest_registration_pdf, dict_map
 from datetime import datetime
+
 import shutil
 from django.db.models import Max
 
@@ -20,13 +23,9 @@ def send_form_failed_email():
     # recipient_list = [settings.EMAIL_HOST_USER]
     # send_mail(subject, message, email_from, recipient_list)
 
-
 def send_email_with_attachment(path_pdf: Path):
-    subject = 'Form submitted'
-    message = 'Successfully submitted form.'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [settings.EMAIL_HOST_USER]
 
+    """Verify that file exists"""
     # Ensure that path_pdf is a Path object
     if isinstance(path_pdf, str):
         path_pdf = Path(path_pdf)
@@ -36,25 +35,48 @@ def send_email_with_attachment(path_pdf: Path):
         print(f"Error: File does not exist: {path_pdf}")
         return
 
-    try:
-        # Create an EmailMessage object
-        print("Generating email")
-        email = EmailMessage(subject, message, email_from, recipient_list)
+    """Selecting SMTP or SendGrid API send"""
+    subject = 'Meldezettel'
+    message = 'Im Anhang finden Sie die Meldezettel. \n MfG MSc. Sebastian Bommer'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [settings.EMAIL_HOST_RECIPIENT]
 
-        # Attach the file with a proper filename and content type
-        with open(path_pdf, 'rb') as f:
-            print("Attaching to email")
-            email.attach(path_pdf.name, f.read(), 'application/zip')  # Corrected to ensure proper attachment as zip
+    """Send VIA SMTP"""
 
-        connection = get_connection(timeout=10)
-        email.connection = connection
-        # Send the email
-        email.send()
-        print(f"Email sent successfully with attachment: {path_pdf}")
+    if settings.EMAIL_USE_API:
+        print("Sending via SMTP")
+        try:
+            # Create an EmailMessage object
+            print("Generating email")
+            email = EmailMessage(subject, message, email_from, recipient_list)
 
-    except Exception as e:
-        print(f"Error sending email: {e}")
-        # send_form_failed_email()
+            # Attach the file with a proper filename and content type
+            with open(path_pdf, 'rb') as f:
+                print("Attaching to email")
+                email.attach(path_pdf.name, f.read(), 'application/zip')  # Corrected to ensure proper attachment as zip
+
+            connection = get_connection(timeout=10)  # needed if email doesn't send
+            email.connection = connection
+            email.send()  # THIS SEND OPERATION FAILS
+
+        except Exception as e:
+            print(f"Error sending email: {e}")
+            # send_form_failed_email()
+
+    else:
+        message = Mail(
+            from_email=settings.EMAIL_HOST_USER,
+            to_emails=settings.EMAIL_HOST_RECIPIENT,
+            subject=subject,
+            html_content=message)
+        try:
+            sg = SendGridAPIClient(settings.EMAIL_API_PASSWORD)
+            # sg.set_sendgrid_data_residency("eu")
+            # uncomment the above line if you are sending mail using a regional EU subuser
+            response = sg.send(message)
+            print(f"Successfully sent E-Mail")
+        except Exception as e:
+            print(e.message)
 
 
 def format_date_fields(data):
