@@ -47,12 +47,12 @@ class Product(models.Model):
 
     id_number = models.CharField(max_length=255, blank=True)
     id_valid = models.BooleanField(default=False)
-    id_issue_date = models.DateField(null=True, blank=True)
+    id_issue_date = models.DateTimeField(null=True, blank=True)
     id_institution = models.CharField(max_length=255, blank=True)
     id_country = models.CharField(max_length=255, blank=True)
 
     signature = models.TextField(blank=True)
-    signature_date = models.DateField(null=True, blank=True)
+    signature_date = models.DateTimeField(null=True, blank=True)
 
     abnb_id = models.CharField(max_length=255, blank=True)
     abnb_name = models.CharField(max_length=255, blank=True)
