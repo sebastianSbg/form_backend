@@ -38,7 +38,7 @@ def send_email_with_attachment(path_pdf: Path):
 
     """Selecting SMTP or SendGrid API send"""
     subject = 'Meldezettel'
-    message = 'Im Anhang finden Sie die Meldezettel.<br> MfG MSc. Sebastian Bommer'
+    message = 'Im Anhang finden Sie die Meldezettel. <br> Mit freundlichen Grüßen <br> MSc. Sebastian Bommer, M.Sc.'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [settings.EMAIL_HOST_RECIPIENT]
 

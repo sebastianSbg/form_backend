@@ -5,7 +5,6 @@
 - [ ] ZIP Needs to allow letters and numbers
 - [ ] Add email
 - [ ] One form with Airbnb ID being input
-- [ ] Switch to API email send on SendGrid -> SMTP blocked on Hobby Plan
 - [ ] Ask if they want bicycle rental or others
 - [ ] Automatic sending of email summaries
 - [ ] Create a default version with version history
@@ -19,6 +18,7 @@
 - [ ] Only entries of people 16 years or older
 - [ ] Address validate to not be Airbnb address
 - [ ] Arrival and departure text doesn't get updated every time field is set!
+- [ ] Switch to API email send on SendGrid -> SMTP blocked on Hobby Plan
 
 
 ## File Structure
