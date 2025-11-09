@@ -12,6 +12,6 @@ class ProductSerializer(serializers.ModelSerializer):
             'person_first_name_4', 'person_last_name_4', 'person_country_4', 'person_sex_4', 'person_birth_date_4',
             'addr_street', 'addr_valid', 'addr_city', 'addr_zip', 'addr_country',
             'id_number', 'id_valid', 'id_issue_date', 'id_institution', 'id_country', 'signature', 'signature_date',
-            'abnb_id', 'abnb_name'
+            'abnb_id', 'abnb_name', 'email', 'marketing_consent'
         ]
         extra_kwargs = {field: {'required': False} for field in fields}

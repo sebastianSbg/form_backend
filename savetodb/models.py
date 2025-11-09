@@ -59,3 +59,7 @@ class Product(models.Model):
 
     # New field lfdnr that must be zero or greater
     lfdnr = models.IntegerField(default=0, blank=True, null=True)
+
+    # Added 2025-11-08 SBQS
+    email = models.CharField(max_length=255, blank=True)
+    marketing_consent = models.BooleanField(default=False)
