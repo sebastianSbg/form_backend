@@ -63,3 +63,4 @@ class Product(models.Model):
     # Added 2025-11-08 SBQS
     email = models.CharField(max_length=255, blank=True)
     marketing_consent = models.BooleanField(default=False)
+    for_business = models.BooleanField(default=False)
