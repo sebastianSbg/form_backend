@@ -2,9 +2,8 @@
 
 ## TODO
 
-- [ ] Date should not be offset by 1 day
+
 - [ ] ZIP Needs to allow letters and numbers
-- [ ] Select that travel is for Job
 - [ ] One form with Airbnb ID being input
 - [ ] Don't allow multiple submissions
 - [ ] Be able to export data for analysis
@@ -13,6 +12,8 @@
 
 ### VX.X.X
 
+- [ ] Select that travel is for Job
+- [ ] Date should not be offset by 1 day
 - [ ] Added email input
 - [ ] Added marketing consent
 
