@@ -146,8 +146,7 @@ def send_form_email(request, id_start, id_end):
         zip_path = f"{zip_filename}.zip"
 
         old_name = Path(zip_path)
-        new_name = old_name.parent / f"forms_{datetime.today().strftime("%Y-%m-%d")}_{abnb_id}.zip"
-        new_name = old_name.parent / f"forms_NEWESTBEST.zip"
+        new_name = old_name.parent / f"forms_{datetime.today().strftime('%Y-%m-%d')}_{abnb_id}.zip"
         old_name.rename(new_name)
 
         zip_path = new_name
