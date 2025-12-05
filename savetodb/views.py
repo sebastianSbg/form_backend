@@ -184,10 +184,11 @@ def product_list(request):
 
         """Sending EMAIL"""
         try:
+            print("Sending EMAIL")
             form_template = Path('savetodb/static/form_template.pdf')
             pdf_out = fill_guest_registration_pdf(serializer_data, form_template, dict_map)
             old_name = pdf_out
-            new_name = pdf_out.parent / f"stier_neu.pdf"
+            new_name = pdf_out.parent / f"{serializer_data['abnb_name']}_{serializer_data['abnb_id']}.pdf"
             old_name.rename(new_name)
             print(f"Sending PDF via email: {pdf_out} and ABNB ID IS: {serializer_data['abnb_id']} and name is {serializer_data['abnb_name']}")
             send_email_with_attachment(new_name)
