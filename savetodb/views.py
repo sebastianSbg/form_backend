@@ -181,7 +181,9 @@ def product_list(request):
     elif request.method == 'POST':
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer_data = serializer.validated_data  # returns a dictionary of the data
+        product = Product.objects.create(**serializer.validated_data, lfdnr=0)  #TODO: fix
+        serializer_data = ProductSerializer(product).data  # returns a dictionary of the data
+        serializer_data = format_date_fields(serializer_data)
 
         # Get the current maximum lfdnr value from the Product model and increment it by one
         max_lfdnr = Product.objects.aggregate(Max('lfdnr'))['lfdnr__max'] or 0
