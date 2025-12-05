@@ -111,7 +111,7 @@ def send_form_email(request, id_start, id_end):
     form_template = Path('savetodb/static/form_template.pdf')
     form_folder = Path('savetodb/static/forms')
     form_folder.mkdir(parents=True, exist_ok=True)  # Create forms folder if it doesn't exist
-    serializer_data = {}
+    abnb_id = ''
 
     # Generate PDFs for each product ID in the specified range
     counter = 1
@@ -121,7 +121,9 @@ def send_form_email(request, id_start, id_end):
             serializer = ProductSerializer(product)
             product_data = serializer.data
             product_data = format_date_fields(product_data)
-            serializer_data = serializer.validated_data  # returns a dictionary of the data
+
+            if counter == 1:
+                abnb_id = product_data['abnb_id']
 
             print(product_data)
 
@@ -144,7 +146,7 @@ def send_form_email(request, id_start, id_end):
         zip_path = f"{zip_filename}.zip"
 
         old_name = Path(zip_path)
-        # new_name = old_name.parent / f"forms_{datetime.today().strftime("%Y-%m-%d")}_{serializer_data['abnb_id']}.zip"
+        new_name = old_name.parent / f"forms_{datetime.today().strftime("%Y-%m-%d")}_{abnb_id}.zip"
         new_name = old_name.parent / f"forms_NEWESTBEST.zip"
         old_name.rename(new_name)
 
