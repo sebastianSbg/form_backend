@@ -111,6 +111,7 @@ def send_form_email(request, id_start, id_end):
     form_template = Path('savetodb/static/form_template.pdf')
     form_folder = Path('savetodb/static/forms')
     form_folder.mkdir(parents=True, exist_ok=True)  # Create forms folder if it doesn't exist
+    serializer_data = {}
 
     # Generate PDFs for each product ID in the specified range
     counter = 1
@@ -120,6 +121,7 @@ def send_form_email(request, id_start, id_end):
             serializer = ProductSerializer(product)
             product_data = serializer.data
             product_data = format_date_fields(product_data)
+            serializer_data = serializer.validated_data  # returns a dictionary of the data
 
             print(product_data)
 
@@ -140,6 +142,13 @@ def send_form_email(request, id_start, id_end):
         zip_filename = form_folder.parent / 'forms'  # Specify the path without .zip extension
         shutil.make_archive(zip_filename, 'zip', form_folder)  # Creates forms.zip
         zip_path = f"{zip_filename}.zip"
+
+        old_name = Path(zip_path)
+        new_name = old_name.parent / f"forms_{datetime.today().strftime("%Y-%m-%d")}_{serializer_data['abnb_id']}.zip"
+        old_name.rename(new_name)
+
+        zip_path = new_name
+
         print(f'Zip file created at: {zip_path}')
 
         # Verify that the zip file exists before sending
@@ -188,7 +197,7 @@ def product_list(request):
             form_template = Path('savetodb/static/form_template.pdf')
             pdf_out = fill_guest_registration_pdf(serializer_data, form_template, dict_map)
             old_name = pdf_out
-            new_name = pdf_out.parent / f"{serializer_data['abnb_name']}_{serializer_data['abnb_id']}.pdf"
+            new_name = pdf_out.parent / f"register_{serializer_data['abnb_id']}_{datetime.today().strftime("%Y-%m-%d")}.pdf"
             old_name.rename(new_name)
             print(f"Sending PDF via email: {pdf_out} and ABNB ID IS: {serializer_data['abnb_id']} and name is {serializer_data['abnb_name']}")
             send_email_with_attachment(new_name)
