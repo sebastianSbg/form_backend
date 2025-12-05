@@ -144,12 +144,13 @@ def send_form_email(request, id_start, id_end):
         zip_path = f"{zip_filename}.zip"
 
         old_name = Path(zip_path)
-        new_name = old_name.parent / f"forms_{datetime.today().strftime("%Y-%m-%d")}_{serializer_data['abnb_id']}.zip"
+        # new_name = old_name.parent / f"forms_{datetime.today().strftime("%Y-%m-%d")}_{serializer_data['abnb_id']}.zip"
+        new_name = old_name.parent / f"forms_NEWESTBEST.zip"
         old_name.rename(new_name)
 
         zip_path = new_name
 
-        print(f'Zip file created at: {zip_path}')
+        print(f'Zip file created at: {str(zip_path)}')
 
         # Verify that the zip file exists before sending
         if not Path(zip_path).exists():
