@@ -40,6 +40,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://railwaytest-production-1d1f.up.railway.app",
     "https://railwaytest-production-*.up.railway.app",
     "https://stier2frontend-production.up.railway.app",
+    "https://rvm5topfrontend-production.up.railway.app",
 ]
 
 # Application definition
