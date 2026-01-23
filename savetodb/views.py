@@ -117,8 +117,8 @@ def format_date_fields(data):
 def send_form_email(request, id_start, id_end):
 
     # TODO: restrict range
-    # if id_end - id_start > 15:
-    #     return Response("Range too large", status=400)
+    if abs(int(id_end) - int(id_start)) > 15:
+        return Response("Range too large", status=400)
 
     form_template = Path('savetodb/static/form_template.pdf')
     form_folder = Path('savetodb/static/forms')
