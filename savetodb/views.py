@@ -15,7 +15,7 @@ from datetime import datetime
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 
 import shutil
 from django.db.models import Max
@@ -186,6 +186,7 @@ def send_form_email(request, id_start, id_end):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def product_list(request):
     if request.method == 'GET':
         return Response('REQUEST CAN NOT BE PROVIDED')
@@ -226,6 +227,7 @@ def product_list(request):
 
 
 @api_view()
+@permission_classes([AllowAny])
 def productDetail(request, id):
     try:
         # Return a response indicating the ID cannot be provided for security or policy reasons
