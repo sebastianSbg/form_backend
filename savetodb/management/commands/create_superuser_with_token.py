@@ -9,9 +9,9 @@ class Command(BaseCommand):
     help = 'Create a superuser and a predefined API token'
 
     def handle(self, *args, **kwargs):
-        username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
-        email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
-        password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+        username = os.environ.get('API_DJANGO_SUPERUSER_USERNAME')
+        email = os.environ.get('API_DJANGO_SUPERUSER_EMAIL')
+        password = os.environ.get('API_DJANGO_SUPERUSER_PASSWORD')
         token_key = os.environ.get('API_TOKEN')
 
         if not username or not email or not password or not token_key:
