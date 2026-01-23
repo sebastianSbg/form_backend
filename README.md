@@ -4,6 +4,7 @@
 
 
 - [ ] ZIP Needs to allow letters and numbers
+- [ ] async with email sending
 - [ ] One form with Airbnb ID being input
 - [ ] Don't allow multiple submissions
 - [ ] Be able to export data for analysis

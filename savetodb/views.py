@@ -13,6 +13,10 @@ from .serializers import ProductSerializer
 from .utils.pdf_utils import fill_guest_registration_pdf, dict_map
 from datetime import datetime
 
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAdminUser
+
 import shutil
 from django.db.models import Max
 
@@ -57,6 +61,7 @@ def send_email_with_attachment(path_pdf: Path):
                 email.attach(path_pdf.name, f.read(), 'application/zip')  # Corrected to ensure proper attachment as zip
 
             connection = get_connection(timeout=10)  # needed if email doesn't send
+            email.content_subtype = "html"  # Allows HTML in the email body
             email.connection = connection
             email.send()  # THIS SEND OPERATION FAILS
 
@@ -106,8 +111,14 @@ def format_date_fields(data):
     return data
 
 
-@api_view(['GET'])
+@api_view(['GET']) #TODO: UPDATE TO POST, becuase we create data, get is only to retrieve data without side effects (creating PDFs)
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAdminUser])
 def send_form_email(request, id_start, id_end):
+
+    if id_end - id_start > 15:
+        return Response("Range too large", status=400)
+
     form_template = Path('savetodb/static/form_template.pdf')
     form_folder = Path('savetodb/static/forms')
     form_folder.mkdir(parents=True, exist_ok=True)  # Create forms folder if it doesn't exist
@@ -177,7 +188,7 @@ def send_form_email(request, id_start, id_end):
 @api_view(['GET', 'POST'])
 def product_list(request):
     if request.method == 'GET':
-        return Response('STORE GET REQUEST')
+        return Response('REQUEST CAN NOT BE PROVIDED')
     elif request.method == 'POST':
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
