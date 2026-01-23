@@ -116,8 +116,9 @@ def format_date_fields(data):
 @permission_classes([IsAdminUser])
 def send_form_email(request, id_start, id_end):
 
-    if id_end - id_start > 15:
-        return Response("Range too large", status=400)
+    # TODO: restrict range
+    # if id_end - id_start > 15:
+    #     return Response("Range too large", status=400)
 
     form_template = Path('savetodb/static/form_template.pdf')
     form_folder = Path('savetodb/static/forms')
@@ -190,7 +191,7 @@ def send_form_email(request, id_start, id_end):
 def product_list(request):
     if request.method == 'GET':
         return Response('REQUEST CAN NOT BE PROVIDED')
-    elif request.method == 'POST':
+    elif request.method == 'POST': #TODO: token authentication when posting
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         product = Product.objects.create(**serializer.validated_data, lfdnr=0)  #TODO: fix
