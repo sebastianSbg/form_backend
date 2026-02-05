@@ -194,19 +194,24 @@ def product_list(request):
     elif request.method == 'POST': #TODO: token authentication when posting
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        product = Product.objects.create(**serializer.validated_data, lfdnr=0)  #TODO: fix
-        serializer_data = ProductSerializer(product).data  # returns a dictionary of the data
-        serializer_data = format_date_fields(serializer_data)
+
+        # product = Product.objects.create(**serializer.validated_data, lfdnr=0)  #TODO: fix
+        # serializer_data = ProductSerializer(product).data  # returns a dictionary of the data
+        # serializer_data = format_date_fields(serializer_data)
 
         # Get the current maximum lfdnr value from the Product model and increment it by one
         max_lfdnr = Product.objects.aggregate(Max('lfdnr'))['lfdnr__max'] or 0
         new_lfdnr = max_lfdnr + 1
 
+        product = Product.objects.create(**serializer.validated_data, lfdnr=new_lfdnr)  #TODO: fix
+        serializer_data = ProductSerializer(product).data  # returns a dictionary of the data
+        serializer_data = format_date_fields(serializer_data)
+
         # Add the new lfdnr value to the validated data
         serializer.validated_data['lfdnr'] = new_lfdnr
 
         # Save the new product entry with the updated lfdnr value
-        Product(**serializer.validated_data).save()
+        # Product(**serializer.validated_data).save()
 
         """Sending EMAIL"""
         try:
